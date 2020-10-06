@@ -4,11 +4,11 @@ This notebook threats the problem of identifying patterns of behavior in network
 
 ## Notations and data
 ### Random variables:
-* We denote random variables as <img src="https://render.githubusercontent.com/render/math?math=X_1, X_2, ..., X_d"> where $X_i$ is the ith random variable (Power or alarm, ..). 
-* We denote by $Val(X_i)$ as the set of discrete values taken by $X_i$.
-* We denote $x_{ni}$ the nth instance of variable $X_i$ in the dataset.
-* $\mathcal{D} = (x_{ni})_{n,i}$ : The complete dataset
-* We denote by $z_n$ The hidden class variable for instance n.
+* We denote random variables as <img src="https://render.githubusercontent.com/render/math?math=X_1, X_2, ..., X_d"> where <img src="https://render.githubusercontent.com/render/math?math=X_i">  is the ith random variable (Power or alarm, ..). 
+* We denote by <img src="https://render.githubusercontent.com/render/math?math=Val(X_i)"> as the set of discrete values taken by <img src="https://render.githubusercontent.com/render/math?math=X_i">.
+* We denote <img src="https://render.githubusercontent.com/render/math?math=x_{ni}"> the nth instance of variable <img src="https://render.githubusercontent.com/render/math?math=X_i"> in the dataset.
+* <img src="https://render.githubusercontent.com/render/math?math=\mathcal{D} = (x_{ni})_{n,i}"> : The complete dataset
+* We denote by <img src="https://render.githubusercontent.com/render/math?math=z_n"> The hidden class variable for instance n.
 
 
 ## Description of the DPCMM
@@ -17,8 +17,7 @@ This notebook threats the problem of identifying patterns of behavior in network
 <div class="pull-right">
 <img src="platenotation.png", width="200",alt="">
 </div>
-
-\begin{equation*}
+<img src="https://render.githubusercontent.com/render/math?math= \begin{equation*}
     \begin{aligned}
         \beta_k & \sim Beta(1, \eta) \\
         \pi_k  & = \beta_k \prod_{l=1}^{k-1} (1- \beta_l) \\
@@ -26,7 +25,7 @@ This notebook threats the problem of identifying patterns of behavior in network
         b_{ki} & \sim Dir(.| \alpha_i, |X_i|) = \prod_{v \in Val(X_i)}b_{v,k,i} ^{\alpha_{iv} - 1} \quad s.t \quad \sum_{v \in Val(X_i)} b_{v,k,i} = 1 \\ 
         x_{ni}|z_n=k, b & \sim cat(.| b_{ki}) = \prod_{v \in Val(X_i)}b_{v,k,i} ^{\mathbb{1}[x_{ni}=v]} 
 \end{aligned}
-\end{equation*}
+\end{equation*}"> 
 
 
 ### Inference on the model:
