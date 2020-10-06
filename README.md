@@ -23,10 +23,10 @@ This notebook threats the problem of identifying patterns of behavior in network
 ### Inference on the model:
 The inference in the DPCMM is done by computing the posterior distribution: 
 
-<img src="https://render.githubusercontent.com/render/math?math= p(\beta, z, b | \mathcal{D}) = \frac{p(\beta, z, b, \mathcal{D})}{p(\mathcal{D})} ">
+<img src="https://render.githubusercontent.com/render/math?math=p(\beta, z, b | \mathcal{D}) = \frac{p(\beta, z, b, \mathcal{D})}{p(\mathcal{D})} ">
 We can drop the constant term <img src="https://render.githubusercontent.com/render/math?math=p(\mathcal{D})"> and the objectif is to compute or estimate <img src="https://render.githubusercontent.com/render/math?math=p(\beta, z, b, \mathcal{D})"> We have:
 
-<img src="https://render.githubusercontent.com/render/math?math= p(\beta, z, b, \mathcal{D}) = \prod_{i=1}^d \prod_{n=1}^N p(x_{ni}|z_n, b_{z_n, i})p(z_n|\beta) \prod_{k=1}^\infty p(b_{k,i})  p(\beta_k) ">
+<img src="https://render.githubusercontent.com/render/math?math=p(\beta, z, b, \mathcal{D}) = \prod_{i=1}^d \prod_{n=1}^N p(x_{ni}|z_n, b_{z_n, i})p(z_n|\beta) \prod_{k=1}^\infty p(b_{k,i})  p(\beta_k) ">
 
 Computing this quantity in close forme is not possible, the prior is a product of infinite terms and infinite parameters. One approach is to preform MCMC methods such as Gibbs sampling, where the Markov chain converges to the posterior of interest. The evaluation of convergence of these methods is hard and scalability is a problem also. In the following section we introduce the approach of variational inference this approach tries to approximate the posterior of interest using a family of simpler and tractable distributions. The problem is thus to find the best member of the family that is closest (in terms of kullback leibler divergence) to the posterior of interest. Thus transforming the problem of inference into an optimization problem where we can use all the mathematical background in this field to solve the inference problem. 
 
@@ -150,21 +150,6 @@ df
 
 
 
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
