@@ -1,3 +1,5 @@
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_CHTML"></script>
 ## Introduction
 
 This notebook threats the problem of identifying patterns of behavior in networks and services, we present the Dirichlet process categorical mixture model. We suppose that all the data has been transformed into discrete categorical data. We apply the model to data gathered from GPON-FTTH network, and...
