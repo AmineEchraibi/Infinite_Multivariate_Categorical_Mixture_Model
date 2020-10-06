@@ -32,10 +32,10 @@ Computing this quantity in close forme is not possible, the prior is a product o
 
 ### Mean Field variational inference [Murphy, Blei, ...]:
 
-The main idea is to approximate <img src="https://render.githubusercontent.com/render/math?math= p(\beta, z, b, \mathcal{D}) "> using simpler family of distribution, the mean field approach tracks back to physics and probablity theory (https://en.wikipedia.org/wiki/Mean_field_theory) For our case the 
+The main idea is to approximate <img src="https://render.githubusercontent.com/render/math?math=p(\beta, z, b, \mathcal{D}) "> using simpler family of distribution, the mean field approach tracks back to physics and probablity theory (https://en.wikipedia.org/wiki/Mean_field_theory) For our case the 
 
 mean field family can be written as:
-<img src="https://render.githubusercontent.com/render/math?math= q(z,b,\beta) = \prod_{k=1}^K \prod_{i=1}^d q(b_{k,i}) q(\beta_k) \prod_{n=1}^N q(z_n)">
+<img src="https://render.githubusercontent.com/render/math?math=q(z,b,\beta) = \prod_{k=1}^K \prod_{i=1}^d q(b_{k,i}) q(\beta_k) \prod_{n=1}^N q(z_n)">
 We suppose that the approximating distribution is a simple factored distribution, the infinite parameters are truncated into a level K so the product becomes finite.
 
 And the objective is to solve the following optimization problem:
@@ -332,26 +332,7 @@ result_df['cluster'] = y_pred
 result_df.head()
 ```
 
-    6
 
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
