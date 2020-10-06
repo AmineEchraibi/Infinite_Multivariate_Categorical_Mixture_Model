@@ -17,76 +17,37 @@ This notebook threats the problem of identifying patterns of behavior in network
 <div class="pull-right">
 <img src="platenotation.png", width="200",alt="">
 </div>
-<img src="https://render.githubusercontent.com/render/math?math= \begin{equation*}
-    \begin{aligned}
-        \beta_k & \sim Beta(1, \eta) \\
-        \pi_k  & = \beta_k \prod_{l=1}^{k-1} (1- \beta_l) \\
-        z_n & \sim  cat(.|\pi) = \prod_{k=1}^\infty \pi_k ^{\mathbb{1}[z_n=k]} \\
-        b_{ki} & \sim Dir(.| \alpha_i, |X_i|) = \prod_{v \in Val(X_i)}b_{v,k,i} ^{\alpha_{iv} - 1} \quad s.t \quad \sum_{v \in Val(X_i)} b_{v,k,i} = 1 \\ 
-        x_{ni}|z_n=k, b & \sim cat(.| b_{ki}) = \prod_{v \in Val(X_i)}b_{v,k,i} ^{\mathbb{1}[x_{ni}=v]} 
-\end{aligned}
-\end{equation*}"> 
+
 
 
 ### Inference on the model:
 The inference in the DPCMM is done by computing the posterior distribution: 
 
-$$ p(\beta, z, b | \mathcal{D}) = \frac{p(\beta, z, b, \mathcal{D})}{p(\mathcal{D})} $$
-We can drop the constant term $ p(\mathcal{D}) $ and the objectif is to compute or estimate $p(\beta, z, b, \mathcal{D})$ We have:
+<img src="https://render.githubusercontent.com/render/math?math= p(\beta, z, b | \mathcal{D}) = \frac{p(\beta, z, b, \mathcal{D})}{p(\mathcal{D})} ">
+We can drop the constant term <img src="https://render.githubusercontent.com/render/math?math=p(\mathcal{D})"> and the objectif is to compute or estimate <img src="https://render.githubusercontent.com/render/math?math=p(\beta, z, b, \mathcal{D})"> We have:
 
-$$ p(\beta, z, b, \mathcal{D}) = \prod_{i=1}^d \prod_{n=1}^N p(x_{ni}|z_n, b_{z_n, i})p(z_n|\beta) \prod_{k=1}^\infty p(b_{k,i})  p(\beta_k) $$
+<img src="https://render.githubusercontent.com/render/math?math= p(\beta, z, b, \mathcal{D}) = \prod_{i=1}^d \prod_{n=1}^N p(x_{ni}|z_n, b_{z_n, i})p(z_n|\beta) \prod_{k=1}^\infty p(b_{k,i})  p(\beta_k) ">
 
 Computing this quantity in close forme is not possible, the prior is a product of infinite terms and infinite parameters. One approach is to preform MCMC methods such as Gibbs sampling, where the Markov chain converges to the posterior of interest. The evaluation of convergence of these methods is hard and scalability is a problem also. In the following section we introduce the approach of variational inference this approach tries to approximate the posterior of interest using a family of simpler and tractable distributions. The problem is thus to find the best member of the family that is closest (in terms of kullback leibler divergence) to the posterior of interest. Thus transforming the problem of inference into an optimization problem where we can use all the mathematical background in this field to solve the inference problem. 
 
 ### Mean Field variational inference [Murphy, Blei, ...]:
 
-The main idea is to approximate $$ p(\beta, z, b, \mathcal{D}) $$ using simpler family of distribution, the mean field approach tracks back to physics and probablity theory (https://en.wikipedia.org/wiki/Mean_field_theory) For our case the 
+The main idea is to approximate <img src="https://render.githubusercontent.com/render/math?math= p(\beta, z, b, \mathcal{D}) "> using simpler family of distribution, the mean field approach tracks back to physics and probablity theory (https://en.wikipedia.org/wiki/Mean_field_theory) For our case the 
 
 mean field family can be written as:
-$$ q(z,b,\beta) = \prod_{k=1}^K \prod_{i=1}^d q(b_{k,i}) q(\beta_k) \prod_{n=1}^N q(z_n) $$
+<img src="https://render.githubusercontent.com/render/math?math= q(z,b,\beta) = \prod_{k=1}^K \prod_{i=1}^d q(b_{k,i}) q(\beta_k) \prod_{n=1}^N q(z_n)">
 We suppose that the approximating distribution is a simple factored distribution, the infinite parameters are truncated into a level K so the product becomes finite.
 
 And the objective is to solve the following optimization problem:
-$$ \min_q \mathbb{D}_{KL} [q || p]$$
+<img src="https://render.githubusercontent.com/render/math?math=\min_q \mathbb{D}_{KL} [q || p]">
 
-The mean field theorem states that the solution to this equation $q^{*}$ for the set of parameters $\zeta = \{z, \beta, b \}$ verifies: 
+The mean field theorem states that the solution to this equation <img src="https://render.githubusercontent.com/render/math?math=q^{*}"> for the set of parameters <img src="https://render.githubusercontent.com/render/math?math=\zeta = \{z, \beta, b \}"> verifies: 
 
 
-$$ \log q_{j}^{*}(\zeta_j) = const + \mathbb{E}_{\zeta \setminus \{\theta_j \} \sim q^{*}} [\log p(\zeta , \mathcal{D})]$$
+<img src="https://render.githubusercontent.com/render/math?math=\log q_{j}^{*}(\zeta_j) = const + \mathbb{E}_{\zeta \setminus \{\theta_j \} \sim q^{*}} [\log p(\zeta , \mathcal{D})]">
 
 In order to compute the approximating distribution, we need to compute the expectancies, which for exponential family distributions is tractable.
 
-### Application to DPCMM:
-
-For the model considered computing the expectancies leads to the following approximating distributions:
-
-* #### Computing $q^{*}$:
-
-$$ q^{*}_n(z_n) = cat(. | \phi_n) $$
-
-$$ q^{*}_{k,i}(b_{k,i}) = Dir(. | \epsilon_{k,i}, |X_i| ) $$
-
-$$ q^{*}_{k}(\beta_{k}) = Beta(. | \gamma_{k,1}, \gamma_{k,2} ) $$
-
-where
-
-$$ \log \phi_{nk} = \sum_{i=1}^d \sum_{v \in Val(X_i)} (\alpha_i + \mathbb{1}[x_{ni}=v] - 1) \{ \psi(\epsilon_{v,k,i} ) - \psi(\sum_v \epsilon_{v,k,i} ) \} +  \psi( \gamma_{k,1} ) - \psi( \gamma_{k,1} +  \gamma_{k,2} ) + \sum_{l=1}^{k-1} \{\psi( \gamma_{l,2} ) - \psi( \gamma_{l,1} +  \gamma_{l,2} )\} $$
-
-$$ \gamma_{k,1} = 1 + \sum_{n=1}^N \phi_{nk} $$
-
-$$ \gamma_{k,2} = \eta + \sum_{n=1}^N \sum_{l=k+1}^K \phi_{nl} $$
-
-$$ \epsilon_{v, k, i} = \alpha_{v,i} + \sum_{n=1}^N \phi_{nk} \mathbb{1}[x_{ni}=v] $$
-
-$ \psi $ : is the digamma function derivative of log gamma.
-
-The following update rules lead to an iterative algorithm similar to EM where the E step is the update of $\phi$ ($z_n$ local parameters) and M step is the update of $b$ and $\beta$ the global parameters.
-
-The variational inference approach has two advantages:
-* The update equations can be coded in matrix form, so the approach is scalable can draw from highly optimized packages such as numpy.
-* The convergence to the true distribution can be monitored using the log predictive probability defined as:
-
-$$ \mathcal{L} = \mathbb{E}_{\theta \sim q^{*} } [\log p(\theta , \mathcal{D}) ]$$
 
 ### Experiments on GPON-FTTH data:
 
