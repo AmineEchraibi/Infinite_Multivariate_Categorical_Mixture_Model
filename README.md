@@ -1,12 +1,10 @@
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_CHTML"></script>
 ## Introduction
 
 This notebook threats the problem of identifying patterns of behavior in networks and services, we present the Dirichlet process categorical mixture model. We suppose that all the data has been transformed into discrete categorical data. We apply the model to data gathered from GPON-FTTH network, and...
 
 ## Notations and data
 ### Random variables:
-* We denote random variables as $X_1, X_2, ..., X_d$ where $X_i$ is the ith random variable (Power or alarm, ..). 
+* We denote random variables as <img src="https://render.githubusercontent.com/render/math?math=X_1, X_2, ..., X_d"> where $X_i$ is the ith random variable (Power or alarm, ..). 
 * We denote by $Val(X_i)$ as the set of discrete values taken by $X_i$.
 * We denote $x_{ni}$ the nth instance of variable $X_i$ in the dataset.
 * $\mathcal{D} = (x_{ni})_{n,i}$ : The complete dataset
